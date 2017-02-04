@@ -1,0 +1,112 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["pages", "Back"]) ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>
+        Edit pages
+    </h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<?php
+    echo $this->tag->form(
+        [
+            "pages/save",
+            "autocomplete" => "off",
+            "class" => "form-horizontal"
+        ]
+    );
+?>
+
+<div class="form-group">
+    <label for="fieldPageTitle" class="col-sm-2 control-label">Page Of Title</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_title", "size" => 30, "class" => "form-control", "id" => "fieldPageTitle"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageSlug" class="col-sm-2 control-label">Page Of Slug</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_slug", "size" => 30, "class" => "form-control", "id" => "fieldPageSlug"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageImage" class="col-sm-2 control-label">Page Of Image</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_image", "size" => 30, "class" => "form-control", "id" => "fieldPageImage"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageContent" class="col-sm-2 control-label">Page Of Content</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textArea(["page_content", "cols" => 30, "rows" => 4, "class" => "form-control", "id" => "fieldPageContent"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageStatus" class="col-sm-2 control-label">Page Of Status</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_status", "type" => "number", "class" => "form-control", "id" => "fieldPageStatus"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageMt" class="col-sm-2 control-label">Page Of Mt</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_mt", "size" => 30, "class" => "form-control", "id" => "fieldPageMt"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageMd" class="col-sm-2 control-label">Page Of Md</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_md", "size" => 30, "class" => "form-control", "id" => "fieldPageMd"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldPageMk" class="col-sm-2 control-label">Page Of Mk</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["page_mk", "size" => 30, "class" => "form-control", "id" => "fieldPageMk"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCreatedAt" class="col-sm-2 control-label">Created</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["created_at", "size" => 30, "class" => "form-control", "id" => "fieldCreatedAt"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldUpdatedAt" class="col-sm-2 control-label">Updated</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["updated_at", "size" => 30, "class" => "form-control", "id" => "fieldUpdatedAt"]) ?>
+    </div>
+</div>
+
+
+<?php echo $this->tag->hiddenField("id") ?>
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo $this->tag->submitButton(["Save", "class" => "btn btn-default"]) ?>
+    </div>
+</div>
+
+<?php echo $this->tag->endForm(); ?>

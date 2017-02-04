@@ -1,0 +1,105 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<div class="page-header">
+    <h1>
+        Search categories
+    </h1>
+    <p>
+        <?php echo $this->tag->linkTo(["categories/new", "Create categories"]) ?>
+    </p>
+</div>
+
+<?php echo $this->getContent() ?>
+
+<?php
+    echo $this->tag->form(
+        [
+            "categories/search",
+            "autocomplete" => "off",
+            "class" => "form-horizontal"
+        ]
+    );
+?>
+
+<div class="form-group">
+    <label for="fieldId" class="col-sm-2 control-label">Id</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["id", "type" => "number", "class" => "form-control", "id" => "fieldId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategoryName" class="col-sm-2 control-label">Category Of Name</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_name", "size" => 30, "class" => "form-control", "id" => "fieldCategoryName"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategorySlug" class="col-sm-2 control-label">Category Of Slug</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_slug", "size" => 30, "class" => "form-control", "id" => "fieldCategorySlug"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategoryDescription" class="col-sm-2 control-label">Category Of Description</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_description", "size" => 30, "class" => "form-control", "id" => "fieldCategoryDescription"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldParentId" class="col-sm-2 control-label">Parent</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["parent_id", "type" => "number", "class" => "form-control", "id" => "fieldParentId"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategoryMt" class="col-sm-2 control-label">Category Of Mt</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_mt", "size" => 30, "class" => "form-control", "id" => "fieldCategoryMt"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategoryMd" class="col-sm-2 control-label">Category Of Md</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_md", "size" => 30, "class" => "form-control", "id" => "fieldCategoryMd"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCategoryMk" class="col-sm-2 control-label">Category Of Mk</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["category_mk", "size" => 30, "class" => "form-control", "id" => "fieldCategoryMk"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldCreatedAt" class="col-sm-2 control-label">Created</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["created_at", "size" => 30, "class" => "form-control", "id" => "fieldCreatedAt"]) ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="fieldUpdatedAt" class="col-sm-2 control-label">Updated</label>
+    <div class="col-sm-10">
+        <?php echo $this->tag->textField(["updated_at", "size" => 30, "class" => "form-control", "id" => "fieldUpdatedAt"]) ?>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <?php echo $this->tag->submitButton(["Search", "class" => "btn btn-default"]) ?>
+    </div>
+</div>
+
+<?php echo $this->tag->endForm(); ?>

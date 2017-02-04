@@ -1,0 +1,83 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<?php use Phalcon\Tag; ?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["pages/index", "Go Back"]); ?></li>
+            <li class="next"><?php echo $this->tag->linkTo(["pages/new", "Create "]); ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>Search result</h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+            <th>Page Of Title</th>
+            <th>Page Of Slug</th>
+            <th>Page Of Image</th>
+            <th>Page Of Content</th>
+            <th>Page Of Status</th>
+            <th>Page Of Mt</th>
+            <th>Page Of Md</th>
+            <th>Page Of Mk</th>
+            <th>Created</th>
+            <th>Updated</th>
+
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($page->items as $_page): ?>
+            <tr>
+                <td><?php echo $_page->getId() ?></td>
+            <td><?php echo $_page->getPageTitle() ?></td>
+            <td><?php echo $_page->getPageSlug() ?></td>
+            <td><?php echo $_page->getPageImage() ?></td>
+            <td><?php echo $_page->getPageContent() ?></td>
+            <td><?php echo $_page->getPageStatus() ?></td>
+            <td><?php echo $_page->getPageMt() ?></td>
+            <td><?php echo $_page->getPageMd() ?></td>
+            <td><?php echo $_page->getPageMk() ?></td>
+            <td><?php echo $_page->getCreatedAt() ?></td>
+            <td><?php echo $_page->getUpdatedAt() ?></td>
+
+                <td><?php echo $this->tag->linkTo(["pages/edit/" . $_page->getId(), "Edit"]); ?></td>
+                <td><?php echo $this->tag->linkTo(["pages/delete/" . $_page->getId(), "Delete"]); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-sm-1">
+        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+            <?php echo $page->current, "/", $page->total_pages ?>
+        </p>
+    </div>
+    <div class="col-sm-11">
+        <nav>
+            <ul class="pagination">
+                <li><?php echo $this->tag->linkTo("pages/search", "First") ?></li>
+                <li><?php echo $this->tag->linkTo("pages/search?page=" . $page->before, "Previous") ?></li>
+                <li><?php echo $this->tag->linkTo("pages/search?page=" . $page->next, "Next") ?></li>
+                <li><?php echo $this->tag->linkTo("pages/search?page=" . $page->last, "Last") ?></li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<?php if(count($page->items) > 0 && !empty($config)) : ?>
+	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+		<thead>
+            <tr>
+            	<?php foreach($config->display->index as $cdi) : ?>
+                <th><?= $config->cols->$cdi->label ?></th>
+                <?php endforeach; ?>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        	<?php foreach ($page->items as $crud): ?>
+        	<tr class="odd">
+        		<?php foreach($config->display->index as $cdi) : ?>
+                <td>
+                	<?= strip_tags($crud->$cdi) ?>
+                </td>
+                <?php endforeach; ?>
+
+                <td class="center">
+                	<?php echo $this->tag->linkTo(["admin{$plural}/edit/" . $crud->id, "Edit"]); ?> |  
+                	<?php echo $this->tag->linkTo(["admin{$plural}/delete/" . $crud->id, "Delete"]); ?>
+
+                </td>
+        	</tr>	
+        	<?php endforeach; ?>
+        </tbody>
+	</table>
+
+	<div class="row">
+	    <div class="col-sm-1">
+	        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+	            <?php echo $page->current, "/", $page->total_pages ?>
+	        </p>
+	    </div>
+	    <div class="col-sm-11">
+	        <nav>
+	            <ul class="pagination">
+	                <li><?php echo $this->tag->linkTo("admin{$plural}/index", "First") ?></li>
+	                <li><?php echo $this->tag->linkTo("admin{$plural}/index?page=" . $page->before, "Previous") ?></li>
+	                <li><?php echo $this->tag->linkTo("admin{$plural}/index?page=" . $page->next, "Next") ?></li>
+	                <li><?php echo $this->tag->linkTo("admin{$plural}/index?page=" . $page->last, "Last") ?></li>
+	            </ul>
+	        </nav>
+	    </div>
+	</div>
+<?php else: ?>
+	<center>
+		<font color="red">
+			No <?= $plural ?> existed or config file not found!
+		</font>
+	</center>
+<?php endif; ?>
+
+<a href="/admin<?=$plural?>/new" class="btn btn-primary">ADD NEW</a>
