@@ -1,6 +1,10 @@
 <?php
 
-class PostsTags extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness;
+
+class PostsTags extends Model
 {
 
     /**

@@ -128,9 +128,19 @@ class CrudController extends Controller
         }        
 
         if (!$model->save()) {
+            $errors = [];
+            foreach ($model->getMessages() as $message) {
+                $errors[$message->getField()] = $message->getMessage();
+            }
+            $this->view->errors = $errors;
+            /*
+            die('');
+
             foreach ($model->getMessages() as $message) {
                 $this->flash->error($message);
             }
+            */
+
 
             $this->dispatcher->forward([
                 'controller' => "admin".$this->plural,

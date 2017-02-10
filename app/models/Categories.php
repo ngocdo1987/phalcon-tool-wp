@@ -1,6 +1,12 @@
 <?php
 
-class Categories extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength as StringLength;
+use Phalcon\Validation\Validator\Uniqueness;
+
+class Categories extends Model
 {
 
     /**
@@ -115,4 +121,25 @@ class Categories extends \Phalcon\Mvc\Model
         return parent::findFirst($parameters);
     }
 
+    public function validation()
+    {
+        $validation = new Validation();
+
+        $validation->add('category_name', new PresenceOf([
+            'message' => 'Category name is required.'
+        ]));
+        $validation->add('category_name', new StringLength([
+            'min' => 3,
+            'messageMinimum' => 'Category name must be at least 3 characters.'
+        ]));
+
+        $validation->add('category_slug', new PresenceOf([
+            'message' => 'Category slug is required.'
+        ]));
+        $validation->add('category_slug', new Uniqueness([
+            'message' => 'Category slug has already been taken.'
+        ]));
+
+        return $this->validate($validation);
+    }
 }

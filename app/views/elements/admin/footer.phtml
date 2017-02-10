@@ -24,6 +24,17 @@
 			CKEDITOR.replace( 'ckeditor' );
 		});
 	</script>
+
+	<!-- Summernote -->
+	<?= $this->tag->stylesheetLink("js/summernote/summernote.css") ?>
+    <?= $this->tag->javascriptInclude("js/summernote/summernote.js") ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 300
+            });
+        });
+    </script>
 </body>
 
 </html>

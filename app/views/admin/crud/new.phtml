@@ -1,4 +1,6 @@
 <div class="row">
+	<?php echo $this->getContent(); ?>
+
 	<?php
 	    echo $this->tag->form(
 	        [
@@ -9,6 +11,88 @@
 	    );
 	?>
 	<div class="col-lg-9">
+		<?php if(!empty($config)) : ?>
+			<?php foreach($config->cols as $k => $v) : ?>
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<?= $v->label ?>: <br/>
+						<?php 
+							switch($v->type) {
+								case 'text':
+									echo $this->tag->textField([$k, 'class' => 'form-control']);
+									break;
+								case 'textarea':
+									echo $this->tag->textArea([$k, 'class' => 'form-control', 'rows' => 6]);
+									break;
+								case 'ckeditor':
+									echo $this->tag->textArea([$k, 'class' => 'form-control', 'id' => 'ckeditor']);
+									break;
+								case 'tinymce':
+									echo $this->tag->textArea([$k, 'class' => 'form-control', 'id' => 'tinymce']);
+									break;
+								case 'summernote':
+									echo $this->tag->textArea([$k, 'class' => 'form-control summernote']);
+									break;
+								case 'select':
+									$select_value = json_decode(json_encode($v->value), true);
+									echo $this->tag->selectStatic([$k, $select_value, 'class' => 'form-control select2']);
+									break;
+								case 'select_recursive':
+								
+									break;
+								case 'select_multiple':
+								
+									break;
+								case 'radio':
+								
+									break;
+								case 'checkbox':
+								
+									break;
+								case 'file':
+									echo $this->tag->fileField([$k, 'class' => 'form-control']);
+									break;
+								case 'image':
+									echo $this->tag->fileField([$k, 'class' => 'form-control image_upload']);
+									?>
+									<br/>
+									<img class="image_upload_preview" src="http://placehold.it/100x100" alt="your image" width="150" />
+									<?php
+									break;
+								case 'date':
+								
+									break;
+								case 'datetime':
+								
+									break;
+								case 'true_false':
+								
+									break;													
+							}
+						?>
+
+						<?php if(isset($errors[$k])) : ?>
+							<font color="red"><?= $errors[$k] ?></font>
+						<?php endif; ?>
+						
+					</div>
+				</div>
+			<?php endforeach; ?>
+
+			<div class="form-group row">
+				<div class="col-lg-12">
+					<?php echo $this->tag->submitButton(["SAVE", "class" => "btn btn-primary"]) ?> 
+					<?php echo $this->tag->linkTo(["admin".$plural, "BACK", "class" => "btn btn-primary"]) ?>
+				</div>
+			</div>
+
+		<?php else : ?>
+			<center>
+	    		<font color="red">
+	    			Please create config file!
+	    		</font>
+	    	</center>	
+		<?php endif; ?>		
 
 	</div>
 
