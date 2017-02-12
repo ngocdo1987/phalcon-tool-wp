@@ -45,7 +45,11 @@
 								
 									break;
 								case 'radio':
-								
+									$radio_value = json_decode(json_encode($v->value), true);
+									foreach($radio_value as $rk => $rv)
+									{
+										echo $this->tag->radioField([$k, 'value' => $rk])." ".$rv."<br/>";
+									}
 									break;
 								case 'checkbox':
 								
