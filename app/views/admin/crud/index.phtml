@@ -22,8 +22,8 @@
                 <?php endforeach; ?>
 
                 <td class="center">
-                	<?php echo $this->tag->linkTo(["admin{$plural}/edit/" . $crud->id, "Edit"]); ?> |  
-                	<?php echo $this->tag->linkTo(["admin{$plural}/delete/" . $crud->id, "Delete"]); ?>
+                	<?php echo $this->tag->linkTo(["admin{$plural}/edit/" . $crud->id, "Edit", "class" => "btn btn-primary btn-xs"]); ?>  
+                	<?php echo $this->tag->linkTo(["admin{$plural}/delete/" . $crud->id, "Delete", "class" => "btn btn-danger btn-xs"]); ?>
 
                 </td>
         	</tr>	

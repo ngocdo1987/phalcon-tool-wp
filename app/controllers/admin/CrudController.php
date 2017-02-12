@@ -36,7 +36,7 @@ class CrudController extends Controller
         if (!is_array($parameters)) {
             $parameters = [];
         }
-        $parameters["order"] = "id";
+        $parameters["order"] = "id DESC";
 
         $cruds = $model->find($parameters);
         if (count($cruds) == 0) {
@@ -65,15 +65,35 @@ class CrudController extends Controller
 
     public function newAction()
     {
+        $config = $this->config;
+
+        // Check recursive
+        if(isset($config->recursive) && $config->recursive == 1)
+        {
+
+        }
+
+        // Check n-n
+        if(isset($config->relation->nn) && count($config->relation->nn) > 0)
+        {
+            foreach($config->relation->nn as $singular_model => $v)
+            {
+                $model = ucfirst($singular_model);
+                $model = new $model;
+
+                $this->view->$singular_model = $model->find();
+            }
+        }
+
         $this->view->plural = $this->plural;
-        $this->view->config = $this->config;
+        $this->view->config = $config;
         $this->view->mt = 'Add '.$this->singular;
         $this->view->pick("admin/crud/new");
 	}
 
 	public function editAction($id)
     {
-    	if (!$this->request->isPost()) {
+        if (!$this->request->isPost()) {
     		$config = $this->config;
     		
     		$model_name = ucfirst($this->plural);
@@ -101,6 +121,29 @@ class CrudController extends Controller
                     $this->tag->setDefault($k, $crud->$k);
                 }
             }
+
+            // Check recursive
+            if(isset($config->recursive) && $config->recursive == 1)
+            {
+
+            }
+
+            // Check n-n
+            if(isset($config->relation->nn) && count($config->relation->nn) > 0)
+            {
+                foreach($config->relation->nn as $singular_model => $v)
+                {
+                    $model = ucfirst($singular_model);
+                    $model = new $model;
+
+                    $this->view->$singular_model = $model->find();
+                }
+            }
+
+            $this->view->plural = $this->plural;
+            $this->view->config = $config;
+            $this->view->mt = 'Edit '.$this->singular;
+            $this->view->pick("admin/crud/edit");
     	}
     }
 
