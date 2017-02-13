@@ -39,6 +39,8 @@ class CrudController extends Controller
         $parameters["order"] = "id DESC";
 
         $cruds = $model->find($parameters);
+
+        /*
         if (count($cruds) == 0) {
             $this->flash->notice("The search did not find any ".$this->plural);
 
@@ -49,6 +51,7 @@ class CrudController extends Controller
 
             return;
         }
+        */
 
         $paginator = new Paginator([
             'data' => $cruds,
@@ -168,21 +171,57 @@ class CrudController extends Controller
             {
                 $model->$k = $this->request->getPost($k);
             }
-        }        
+        }
+
+        // Save n-n
+        if(isset($config->relation->nn) && count($config->relation->nn) > 0)
+        {
+            foreach($config->relation->nn as $singular_model => $v)
+            {
+                $singular_model_ids = (null !== $this->request->getPost($singular_model)) ? $this->request->getPost($singular_model) : array();
+
+                $sync = [];
+
+                if(!empty($singular_model_ids))
+                {
+                    $singular_model_name = ucfirst($singular_model);
+                    $singular_model_name = new $singular_model_name;
+
+                    //$sync = $singular_model_name->findIn($singular_model_ids);
+
+                    
+                    foreach($singular_model_ids as $smi)
+                    {
+                        $sm = $singular_model_name->findFirstByid($smi);
+                        if ($sm) {
+                            $sync[] = $sm;
+                        }
+                    }
+                    
+                }
+                //print_r($sync); die('');
+                //$get_model = 'get'.ucfirst($singular_model);
+                //$model->$get_model()->update($sync);
+                $model->$singular_model = $sync;
+                //echo '<pre>'; print_r($model->$singular_model); echo '</pre>';
+                //print_r($sync);
+            }
+        }     
 
         if (!$model->save()) {
             $errors = [];
-            foreach ($model->getMessages() as $message) {
+            foreach ($model->getMessages() as $message) 
+            {
                 $errors[$message->getField()] = $message->getMessage();
             }
             $this->view->errors = $errors;
-            /*
-            die('');
+            
+            //die('');
 
             foreach ($model->getMessages() as $message) {
                 $this->flash->error($message);
             }
-            */
+            
 
 
             $this->dispatcher->forward([
@@ -192,6 +231,15 @@ class CrudController extends Controller
 
             return;
         }
+
+        //die("Id: ".$model->id);
+        //$model = $model->findFirstByid($model->id);
+
+        
+        //die('');
+        //echo '<pre>'; print_r($model); echo '</pre>'; die('');
+
+        //$model->save();
 
         $this->flash->success(ucfirst($this->singular)." was created successfully");
 

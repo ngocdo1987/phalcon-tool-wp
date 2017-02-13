@@ -1,7 +1,10 @@
 <?php
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Relation;
 use Phalcon\Validation;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength as StringLength;
 use Phalcon\Validation\Validator\Uniqueness;
 
 class Pages extends Model

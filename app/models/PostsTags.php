@@ -1,11 +1,22 @@
 <?php
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Relation;
 use Phalcon\Validation;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength as StringLength;
 use Phalcon\Validation\Validator\Uniqueness;
 
 class PostsTags extends Model
 {
+    /**
+     *
+     * @var integer
+     * @Primary
+     * @Identity
+     * @Column(type="integer", length=10, nullable=false)
+     */
+    public $id;
 
     /**
      *
@@ -29,6 +40,28 @@ class PostsTags extends Model
     public function initialize()
     {
         $this->setSchema("fw_phalcon_tool");
+
+        $this->belongsTo(
+            "post_id",
+            "Posts",
+            "id"
+        );
+
+        $this->belongsTo(
+            "tag_id",
+            "Tags",
+            "id"
+        );
+    }
+
+    public function getPosts($parameters = null)
+    {
+        return $this->getRelated("Posts", $parameters);
+    }
+
+    public function getTags($parameters = null)
+    {
+        return $this->getRelated("Tags", $parameters);
     }
 
     /**

@@ -1,7 +1,10 @@
 <?php
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Relation;
 use Phalcon\Validation;
+use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\StringLength as StringLength;
 use Phalcon\Validation\Validator\Uniqueness;
 
 class Tags extends Model
@@ -78,6 +81,30 @@ class Tags extends Model
     public function initialize()
     {
         $this->setSchema("fw_phalcon_tool");
+
+        $this->hasMany(
+            "id",
+            "PostsTags",
+            "tag_id"
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "PostsTags",
+            "tag_id", "post_id",
+            "Posts",
+            "id"
+        );
+    }
+
+    public function getPostsTags($parameters = null)
+    {
+        return $this->getRelated("PostsTags", $parameters);
+    }
+
+    public function getPosts($parameters = null)
+    {
+        return $this->getRelated("Posts", $parameters);
     }
 
     /**
