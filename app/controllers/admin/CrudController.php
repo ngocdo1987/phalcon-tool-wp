@@ -1,5 +1,6 @@
 <?php
 use Phalcon\Mvc\Controller;
+//use Phalcon\Http\Response;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
@@ -21,19 +22,29 @@ class CrudController extends Controller
 
     public function indexAction()
     {
+        $this->persistent->parameters = null; // !IMPORTANT
+
     	$model_name = ucfirst($this->plural);
     	$model = new $model_name;
 
     	$numberPage = 1;
-        if ($this->request->isPost()) {
+        //print_r($numberPage); die('');
+        if ($this->request->isPost()) 
+        {
             $query = Criteria::fromInput($this->di, $model_name, $_POST);
             $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        } 
+        else 
+        {
+            if($this->request->getQuery("page", "int") > 0)
+            {
+                $numberPage = $this->request->getQuery("page", "int");
+            }
         }
 
         $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
+        if (!is_array($parameters)) 
+        {
             $parameters = [];
         }
         $parameters["order"] = "id DESC";
@@ -96,7 +107,8 @@ class CrudController extends Controller
 
 	public function editAction($id)
     {
-        if (!$this->request->isPost()) {
+        if (!$this->request->isPost()) 
+        {
     		$config = $this->config;
     		
     		$model_name = ucfirst($this->plural);
@@ -139,9 +151,30 @@ class CrudController extends Controller
                     $model = ucfirst($singular_model);
                     $model = new $model;
 
+                    $singular_model_related_ids = $singular_model.'_related_ids';
+                    $$singular_model_related_ids = [];
+
                     $this->view->$singular_model = $model->find();
+
+                    if(!empty($crud->$singular_model))
+                    {
+                        foreach($crud->$singular_model as $cs)
+                        {
+                            $$singular_model_related_ids[] = $cs->id;
+                        }
+                    }
+
+                    $this->view->$singular_model_related_ids = $$singular_model_related_ids;
                 }
             }
+
+            //echo '<pre>'; print_r($crud->categories->items); echo '</pre>';
+            //foreach($crud->categories as $cc)
+            //{
+                //echo $cc->id."<br/>";
+            //}
+            //echo '<pre>'; print_r($crud->tags->items); echo '</pre>';
+            //die('');
 
             $this->view->plural = $this->plural;
             $this->view->config = $config;
@@ -152,7 +185,8 @@ class CrudController extends Controller
 
     public function createAction()
     {
-        if (!$this->request->isPost()) {
+        if (!$this->request->isPost()) 
+        {
             $this->dispatcher->forward([
                 'controller' => "admin".$this->plural,
                 'action' => 'index'
@@ -187,28 +221,23 @@ class CrudController extends Controller
                     $singular_model_name = ucfirst($singular_model);
                     $singular_model_name = new $singular_model_name;
 
-                    //$sync = $singular_model_name->findIn($singular_model_ids);
-
-                    
                     foreach($singular_model_ids as $smi)
                     {
                         $sm = $singular_model_name->findFirstByid($smi);
-                        if ($sm) {
+                        if ($sm) 
+                        {
                             $sync[] = $sm;
                         }
                     }
                     
                 }
-                //print_r($sync); die('');
-                //$get_model = 'get'.ucfirst($singular_model);
-                //$model->$get_model()->update($sync);
+
                 $model->$singular_model = $sync;
-                //echo '<pre>'; print_r($model->$singular_model); echo '</pre>';
-                //print_r($sync);
             }
         }     
 
-        if (!$model->save()) {
+        if (!$model->save()) 
+        {
             $errors = [];
             foreach ($model->getMessages() as $message) 
             {
@@ -218,40 +247,36 @@ class CrudController extends Controller
             
             //die('');
 
-            foreach ($model->getMessages() as $message) {
+            foreach ($model->getMessages() as $message) 
+            {
                 $this->flash->error($message);
             }
             
-
-
             $this->dispatcher->forward([
                 'controller' => "admin".$this->plural,
                 'action' => 'new'
             ]);
 
+            //$this->response->redirect("admin".$this->plural."/index");
+
             return;
         }
 
-        //die("Id: ".$model->id);
-        //$model = $model->findFirstByid($model->id);
-
-        
-        //die('');
-        //echo '<pre>'; print_r($model); echo '</pre>'; die('');
-
-        //$model->save();
-
         $this->flash->success(ucfirst($this->singular)." was created successfully");
 
+        /*
         $this->dispatcher->forward([
             'controller' => "admin".$this->plural,
             'action' => 'index'
         ]);
+        */
+        $this->response->redirect("admin".$this->plural."/index");
     }
 
     public function saveAction()
     {
-        if (!$this->request->isPost()) {
+        if (!$this->request->isPost()) 
+        {
             $this->dispatcher->forward([
                 'controller' => "admin".$this->plural,
                 'action' => 'index'
@@ -265,7 +290,8 @@ class CrudController extends Controller
         $model = new $model_name;
         $crud = $model->findFirstByid($id);
 
-        if (!$crud) {
+        if (!$crud) 
+        {
             $this->flash->error(ucfirst($this->singular)." does not exist " . $id);
 
             $this->dispatcher->forward([
@@ -285,8 +311,10 @@ class CrudController extends Controller
             }
         }
 
-        if (!$crud->save()) {
-            foreach ($crud->getMessages() as $message) {
+        if (!$crud->save()) 
+        {
+            foreach ($crud->getMessages() as $message) 
+            {
                 $this->flash->error($message);
             }
 
@@ -312,7 +340,9 @@ class CrudController extends Controller
         $model_name = ucfirst($this->plural);
         $model = new $model_name;
         $crud = $model->findFirstByid($id);
-        if (!$crud) {
+
+        if (!$crud) 
+        {
             $this->flash->error(ucfirst($this->singular)." was not found");
 
             $this->dispatcher->forward([
@@ -323,7 +353,8 @@ class CrudController extends Controller
             return;
         }
 
-        if (!$crud->delete()) {
+        if (!$crud->delete()) 
+        {
 
             foreach ($crud->getMessages() as $message) {
                 $this->flash->error($message);

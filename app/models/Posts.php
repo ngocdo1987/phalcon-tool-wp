@@ -125,24 +125,24 @@ class Posts extends Model
         );
     }
 
-    public function getCategoriesPosts($parameters = null)
+    public function getCategoriesPosts($params = null)
     {
-        return $this->getRelated("CategoriesPosts", $parameters);
+        return $this->getRelated("CategoriesPosts", $params);
     }
 
-    public function getCategories($parameters = null)
+    public function getCategories($params = null)
     {
-        return $this->getRelated("Categories", $parameters);
+        return $this->getRelated("Categories", $params);
     }
 
-    public function getPostsTags($parameters = null)
+    public function getPostsTags($params = null)
     {
-        return $this->getRelated("PostsTags", $parameters);
+        return $this->getRelated("PostsTags", $params);
     }
 
-    public function getTags($parameters = null)
+    public function getTags($params = null)
     {
-        return $this->getRelated("Tags", $parameters);
+        return $this->getRelated("Tags", $params);
     }
 
     /**
@@ -161,9 +161,9 @@ class Posts extends Model
      * @param mixed $parameters
      * @return Posts[]|Posts
      */
-    public static function find($parameters = null)
+    public static function find($params = null)
     {
-        return parent::find($parameters);
+        return parent::find($params);
     }
 
     /**
@@ -172,9 +172,9 @@ class Posts extends Model
      * @param mixed $parameters
      * @return Posts
      */
-    public static function findFirst($parameters = null)
+    public static function findFirst($params = null)
     {
-        return parent::findFirst($parameters);
+        return parent::findFirst($params);
     }
 
 }

@@ -54,14 +54,14 @@ class CategoriesPosts extends Model
         );
     }
 
-    public function getCategories($parameters = null)
+    public function getCategories($params = null)
     {
-        return $this->getRelated("Categories", $parameters);
+        return $this->getRelated("Categories", $params);
     }
 
-    public function getPosts($parameters = null)
+    public function getPosts($params = null)
     {
-        return $this->getRelated("Posts", $parameters);
+        return $this->getRelated("Posts", $params);
     }
 
     /**
@@ -80,9 +80,9 @@ class CategoriesPosts extends Model
      * @param mixed $parameters
      * @return CategoriesPosts[]|CategoriesPosts
      */
-    public static function find($parameters = null)
+    public static function find($params = null)
     {
-        return parent::find($parameters);
+        return parent::find($params);
     }
 
     /**
@@ -91,9 +91,9 @@ class CategoriesPosts extends Model
      * @param mixed $parameters
      * @return CategoriesPosts
      */
-    public static function findFirst($parameters = null)
+    public static function findFirst($params = null)
     {
-        return parent::findFirst($parameters);
+        return parent::findFirst($params);
     }
 
 }

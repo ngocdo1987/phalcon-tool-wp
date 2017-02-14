@@ -113,9 +113,9 @@ class Pages extends Model
      * @param mixed $parameters
      * @return Pages[]|Pages
      */
-    public static function find($parameters = null)
+    public static function find($params = null)
     {
-        return parent::find($parameters);
+        return parent::find($params);
     }
 
     /**
@@ -124,9 +124,9 @@ class Pages extends Model
      * @param mixed $parameters
      * @return Pages
      */
-    public static function findFirst($parameters = null)
+    public static function findFirst($params = null)
     {
-        return parent::findFirst($parameters);
+        return parent::findFirst($params);
     }
 
 }

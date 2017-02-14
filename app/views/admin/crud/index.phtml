@@ -1,11 +1,12 @@
 <p>
-	<a href="/admin<?=$plural?>/new" class="btn btn-primary">ADD NEW</a>
+	<?php echo $this->tag->linkTo(["admin{$plural}/new", "ADD NEW", "class" => "btn btn-primary"]); ?>  
 </p>
 
 <?php if(count($page->items) > 0 && !empty($config)) : ?>
 	<table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
 		<thead>
             <tr>
+            	<th><input type="checkbox" /></th>
             	<?php foreach($config->display->index as $cdi) : ?>
                 <th><?= $config->cols->$cdi->label ?></th>
                 <?php endforeach; ?>
@@ -15,6 +16,7 @@
         <tbody>
         	<?php foreach ($page->items as $crud): ?>
         	<tr class="odd">
+        		<td><input type="checkbox" /></td>
         		<?php foreach($config->display->index as $cdi) : ?>
                 <td>
                 	<?= strip_tags($crud->$cdi) ?>

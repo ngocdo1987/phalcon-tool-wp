@@ -97,14 +97,14 @@ class Tags extends Model
         );
     }
 
-    public function getPostsTags($parameters = null)
+    public function getPostsTags($params = null)
     {
-        return $this->getRelated("PostsTags", $parameters);
+        return $this->getRelated("PostsTags", $params);
     }
 
-    public function getPosts($parameters = null)
+    public function getPosts($params = null)
     {
-        return $this->getRelated("Posts", $parameters);
+        return $this->getRelated("Posts", $params);
     }
 
     /**
@@ -123,9 +123,9 @@ class Tags extends Model
      * @param mixed $parameters
      * @return Tags[]|Tags
      */
-    public static function find($parameters = null)
+    public static function find($params = null)
     {
-        return parent::find($parameters);
+        return parent::find($params);
     }
 
     /**
@@ -134,9 +134,9 @@ class Tags extends Model
      * @param mixed $parameters
      * @return Tags
      */
-    public static function findFirst($parameters = null)
+    public static function findFirst($params = null)
     {
-        return parent::findFirst($parameters);
+        return parent::findFirst($params);
     }
 
 }

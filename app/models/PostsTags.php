@@ -54,14 +54,14 @@ class PostsTags extends Model
         );
     }
 
-    public function getPosts($parameters = null)
+    public function getPosts($params = null)
     {
-        return $this->getRelated("Posts", $parameters);
+        return $this->getRelated("Posts", $params);
     }
 
-    public function getTags($parameters = null)
+    public function getTags($params = null)
     {
-        return $this->getRelated("Tags", $parameters);
+        return $this->getRelated("Tags", $params);
     }
 
     /**
@@ -80,9 +80,9 @@ class PostsTags extends Model
      * @param mixed $parameters
      * @return PostsTags[]|PostsTags
      */
-    public static function find($parameters = null)
+    public static function find($params = null)
     {
-        return parent::find($parameters);
+        return parent::find($params);
     }
 
     /**
@@ -91,9 +91,9 @@ class PostsTags extends Model
      * @param mixed $parameters
      * @return PostsTags
      */
-    public static function findFirst($parameters = null)
+    public static function findFirst($params = null)
     {
-        return parent::findFirst($parameters);
+        return parent::findFirst($params);
     }
 
 }

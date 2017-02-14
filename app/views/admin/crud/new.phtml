@@ -1,5 +1,5 @@
 <div class="row">
-	<?php echo $this->getContent(); ?>
+	<?php //echo $this->getContent(); ?>
 
 	<?php
 	    echo $this->tag->form(
@@ -39,7 +39,8 @@
 									echo $this->tag->selectStatic([$k, $select_value, 'class' => 'form-control select2']);
 									break;
 								case 'select_recursive':
-								
+									// Hidden
+									echo $this->tag->hiddenField([$k, 'value' => 0]);
 									break;
 								case 'select_multiple':
 								
