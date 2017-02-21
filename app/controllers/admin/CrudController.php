@@ -70,10 +70,13 @@ class CrudController extends Controller
             'page' => $numberPage
         ]);
 
-        $this->view->page = $paginator->getPaginate();
-        $this->view->plural = $this->plural;
-        $this->view->config = $this->config;
-        $this->view->mt = 'List '.$this->plural;
+        $this->view->setVars([
+            'page' => $paginator->getPaginate(),
+            'plural' => $this->plural,
+            'config' => $this->config,
+            'mt' => 'List '.$this->plural,
+        ]);
+
         $this->view->pick("admin/crud/index");
     }
 
@@ -99,9 +102,12 @@ class CrudController extends Controller
             }
         }
 
-        $this->view->plural = $this->plural;
-        $this->view->config = $config;
-        $this->view->mt = 'Add '.$this->singular;
+        $this->view->setVars([
+            'plural' => $this->plural,
+            'config' => $config,
+            'mt' => 'Add '.$this->singular
+        ]);
+        
         $this->view->pick("admin/crud/new");
 	}
 
@@ -288,9 +294,9 @@ class CrudController extends Controller
         $id = $this->request->getPost("id");
         $model_name = ucfirst($this->plural);
         $model = new $model_name;
-        $crud = $model->findFirstByid($id);
+        $model = $model->findFirstByid($id);
 
-        if (!$crud) 
+        if (!$model) 
         {
             $this->flash->error(ucfirst($this->singular)." does not exist " . $id);
 
@@ -307,13 +313,46 @@ class CrudController extends Controller
         {
             foreach($config->cols as $k => $v)
             {
-                $crud->$k = $this->request->getPost($k);
+                $model->$k = $this->request->getPost($k);
             }
         }
 
-        if (!$crud->save()) 
+        // Save n-n
+        if(isset($config->relation->nn) && count($config->relation->nn) > 0)
         {
-            foreach ($crud->getMessages() as $message) 
+            foreach($config->relation->nn as $singular_model => $v)
+            {
+                // Delete old n-n
+                $func_name = 'get'.$v->bridge_func;
+                $model->$func_name()->delete();
+
+                $singular_model_ids = (null !== $this->request->getPost($singular_model)) ? $this->request->getPost($singular_model) : array();
+
+                $sync = [];
+
+                if(!empty($singular_model_ids))
+                {
+                    $singular_model_name = ucfirst($singular_model);
+                    $singular_model_name = new $singular_model_name;
+
+                    foreach($singular_model_ids as $smi)
+                    {
+                        $sm = $singular_model_name->findFirstByid($smi);
+                        if ($sm) 
+                        {
+                            $sync[] = $sm;
+                        }
+                    }
+                    
+                }
+
+                $model->$singular_model = $sync;
+            }
+        }
+        
+        if (!$model->save()) 
+        {
+            foreach ($model->getMessages() as $message) 
             {
                 $this->flash->error($message);
             }
@@ -321,7 +360,7 @@ class CrudController extends Controller
             $this->dispatcher->forward([
                 'controller' => "admin".$this->plural,
                 'action' => 'edit',
-                'params' => [$crud->id]
+                'params' => [$model->id]
             ]);
 
             return;
@@ -329,19 +368,23 @@ class CrudController extends Controller
 
         $this->flash->success(ucfirst($this->singular)." was updated successfully");
 
+        /*
         $this->dispatcher->forward([
             'controller' => "admin".$this->plural,
             'action' => 'index'
         ]);
+        */
+
+        $this->response->redirect("admin".$this->plural."/index");
     }
 
     public function deleteAction($id)
     {
         $model_name = ucfirst($this->plural);
         $model = new $model_name;
-        $crud = $model->findFirstByid($id);
+        $model = $model->findFirstByid($id);
 
-        if (!$crud) 
+        if (!$model) 
         {
             $this->flash->error(ucfirst($this->singular)." was not found");
 
@@ -353,10 +396,10 @@ class CrudController extends Controller
             return;
         }
 
-        if (!$crud->delete()) 
+        if (!$model->delete()) 
         {
 
-            foreach ($crud->getMessages() as $message) {
+            foreach ($model->getMessages() as $message) {
                 $this->flash->error($message);
             }
 

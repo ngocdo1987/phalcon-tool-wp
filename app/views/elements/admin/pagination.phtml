@@ -1,0 +1,32 @@
+<?php if(isset($page->total_pages) && $page->total_pages > 1) : ?>
+	<div class="row">
+	    <div class="col-sm-2">
+	        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+	            Page <?= $page->current, "/", $page->total_pages ?>
+	        </p>
+	    </div>
+	    <div class="col-sm-10">
+	        <nav>
+	            <ul class="pagination">
+	                <li>
+	                	<?= $this->tag->linkTo("admin{$plural}/index", "First") ?>
+	                </li>
+	                <li>
+	                	<?= $this->tag->linkTo("admin{$plural}/index?page=" . $page->before, "Previous") ?>
+	                </li>
+	                <?php for($i = 1; $i <= $page->total_pages; $i++) : ?>
+	                <li>
+	                	<?= $this->tag->linkTo("admin{$plural}/index?page=".$i, $i) ?>
+	                </li>	
+	                <?php endfor; ?>
+	                <li>
+	                	<?= $this->tag->linkTo("admin{$plural}/index?page=" . $page->next, "Next") ?>
+	                </li>
+	                <li>
+	                	<?= $this->tag->linkTo("admin{$plural}/index?page=" . $page->last, "Last") ?>
+	                </li>
+	            </ul>
+	        </nav>
+	    </div>
+	</div>
+<?php endif; ?>
